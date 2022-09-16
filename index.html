@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azaan App</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<style>
+     .weatherCard {
+           
+            text-align: center;
+            border: 1px solid black;
+            color: black;
+            margin-top: 20px;
+            width: 20%;
+            border-radius: 30px;
+            padding: 10px;
+            background-color: transparent;
+        }
+        input {
+            width: 15%;
+            display: inline-block;
+            background: #f1f1f1;
+            font-size: 15px;
+            padding: 16px 20px;
+            margin: 8px 0;
+            border-radius: 25px;
+            height: 5px;
+            border-color: #f1f1f1;
+            }
+
+        button {
+            text-align: center;
+            color: rgb(0, 0, 0);
+            padding: 16px 20px;
+            margin: 8px 0;
+            border-radius: 25px;
+            width: 10%;
+            opacity: 0.9;
+            height: 50px;
+            }
+        body{
+            
+            background-color: rgb(198, 206, 206);
+        }
+</style>
+<body>
+    <h1><u><center>AZAAN APP</center></u></h1>
+
+
+    <form onsubmit="submitFunction(); return false">
+        <center><h3 >City Name: <input class="button" type="text" id="cityName" required placeholder="Enter a City">
+       <br> Country: <input class="button" type="text" id="country" required placeholder="Enter a Country"></h3>
+        <button style="border: 1px solid; border-radius: 25px ";><b>Get Timings</button></center>
+    </form>
+    <div id="current"></div>
+
+    <script>
+
+        function submitFunction() {
+            let cityName = document.querySelector("#cityName").value
+            let month = document.querySelector("#country").value
+            
+            axios.get(`http://api.aladhan.com/v1/timingsByCity?city=${cityName}&country=${country}&method=8`)
+                .then(function (response) {
+                    console.log("Current :",response.data);
+
+                    document.querySelector("#current").innerHTML =
+                    `<center>
+                    <div class="weatherCard">
+                    <u><h1 id="date"></h1 ></u>
+                    <h3 id="fajr"></h3>
+                    <h3 id="dhuhr"></h3>
+                    <h3 id="asr"></h3>
+                    <h3 id="maghrib"></h3>
+                    <h3 id ="isha"></h3>
+                    <h3 id="isresult"></h3>
+                    </center>`
+
+                    document.querySelector("#date").innerHTML =`
+                    Date : ${response.data.data.date.gregorian.date}`;
+                    document.querySelector("#fajr").innerHTML =`
+                    Fajr : <u>${response.data.data.timings.Fajr}`;
+                    document.querySelector("#dhuhr").innerHTML =
+                    `Dhuhr : <u>${response.data.data.timings.Dhuhr}`;
+                    document.querySelector("#asr").innerHTML =
+                    ` Asr : <u>${response.data.data.timings.Asr}`;
+                    document.querySelector("#maghrib").innerHTML =
+                    `Maghrib : <u>${response.data.data.timings.Maghrib}`;
+                    document.querySelector("#isha").innerHTML =
+                    `Isha : <u>${response.data.data.timings.Isha}`;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+
+            }
+
+    </script>
+
+</body>
+</html>
